@@ -1,6 +1,10 @@
-import { sensors } from "@/data/mockData";
+import { Sensor } from "@/types/monitoring";
 
-const SensorStatusBar = () => {
+interface SensorStatusBarProps {
+  sensors: Sensor[];
+}
+
+const SensorStatusBar = ({ sensors }: SensorStatusBarProps) => {
   const counts = {
     normal: sensors.filter(s => s.status === "normal").length,
     warning: sensors.filter(s => s.status === "warning").length,
@@ -12,9 +16,9 @@ const SensorStatusBar = () => {
     <div className="rounded-lg border border-border bg-card p-5">
       <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Sensor Status Distribution</span>
       <div className="flex items-center gap-1 mt-3 h-3 rounded-full overflow-hidden">
-        <div className="h-full bg-success rounded-l-full transition-all" style={{ width: `${(counts.normal / total) * 100}%` }} />
-        <div className="h-full bg-warning transition-all" style={{ width: `${(counts.warning / total) * 100}%` }} />
-        <div className="h-full bg-critical rounded-r-full transition-all" style={{ width: `${(counts.critical / total) * 100}%` }} />
+        {counts.normal > 0 && <div className="h-full bg-success rounded-l-full transition-all duration-700" style={{ width: `${(counts.normal / total) * 100}%` }} />}
+        {counts.warning > 0 && <div className="h-full bg-warning transition-all duration-700" style={{ width: `${(counts.warning / total) * 100}%` }} />}
+        {counts.critical > 0 && <div className="h-full bg-critical rounded-r-full transition-all duration-700" style={{ width: `${(counts.critical / total) * 100}%` }} />}
       </div>
       <div className="flex items-center gap-6 mt-3">
         <Legend color="bg-success" label="Normal" count={counts.normal} />
